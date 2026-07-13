@@ -62,6 +62,32 @@ final class SemVersion implements Version
 		];
 	}
 
+	public function bump(Bump $bump, ?PreRelease $preRelease = null, ?BuildMetaData $buildMetaData = null): static
+	{
+		$major = $this->major;
+		$minor = $this->minor;
+		$patch = $this->patch;
+		if ($bump === Bump::Major) {
+			$major++;
+			$minor = 0;
+			$patch = 0;
+		}
+		elseif ($bump === Bump::Minor) {
+			$minor++;
+			$patch = 0;
+		}
+		elseif ($bump === Bump::Patch) {
+			$patch++;
+		}
+		return new self(
+			$major,
+			$minor,
+			$patch,
+			$preRelease,
+			$buildMetaData,
+		);
+	}
+
 	protected function getComparator(): Comparator
 	{
 		if (!isset(self::$comparator)) {

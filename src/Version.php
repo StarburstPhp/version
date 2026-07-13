@@ -2,6 +2,7 @@
 
 namespace Starburst\Version;
 
+use Starburst\Version\Extension\BuildMetaData;
 use Starburst\Version\Extension\PreRelease;
 
 interface Version extends \JsonSerializable, \Stringable
@@ -14,4 +15,6 @@ interface Version extends \JsonSerializable, \Stringable
 	 * @return array<string, mixed>
 	 */
 	public function getArrayCopy(): array;
+
+	public function bump(Bump $bump, ?PreRelease $preRelease = null, ?BuildMetaData $buildMetaData = null): static;
 }

@@ -60,6 +60,21 @@ final class CalendarVersion implements Version
 		];
 	}
 
+	public function bump(
+		Bump $bump = Bump::Patch,
+		?PreRelease $preRelease = null,
+		?BuildMetaData $buildMetaData = null,
+		?\DateTimeImmutable $releaseDate = null,
+	): static {
+		$releaseDate ??= new \DateTimeImmutable('now')->setTime(0, 0, 0);
+
+		if ($releaseDate == $this->releaseDate && !$buildMetaData) {
+			throw new \BadMethodCallException('No build metadata provided to bump version. If release date is the same, build metadata must be provided.');
+		}
+
+		return new self($releaseDate, $preRelease, $buildMetaData);
+	}
+
 	protected function getComparator(): Comparator
 	{
 		if (!isset(self::$comparator)) {
