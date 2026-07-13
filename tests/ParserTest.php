@@ -4,6 +4,7 @@ namespace Starburst\Version\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Starburst\Version\CalendarVersion;
 use Starburst\Version\Extension\BuildMetaData;
 use Starburst\Version\Extension\PreRelease;
 use Starburst\Version\Parser;
@@ -90,6 +91,30 @@ final class ParserTest extends TestCase
 			],
 			'Simple calendar version' => [
 				'2026.03.05',
+				CalendarVersion::class,
+			],
+			'Calendar version with pre-release' => [
+				'2026.03.05-2',
+				CalendarVersion::class,
+			],
+			'Calendar version with pre-release with multiple identifiers' => [
+				'2026.03.05-b.2',
+				CalendarVersion::class,
+			],
+			'Calendar version with build meta data' => [
+				'2026.03.05-2+d31d336',
+				CalendarVersion::class,
+			],
+			'Calendar version with pre-release and build meta data with multiple identifiers' => [
+				'2026.03.05-dev.2+d31d336',
+				CalendarVersion::class,
+			],
+			'Calendar version with commit hash as pre-release' => [
+				'2026.03.05-d31d336',
+				CalendarVersion::class,
+			],
+			'Calendar version with commit hash as build meta data' => [
+				'2026.03.05+d31d336',
 				CalendarVersion::class,
 			],
 		];

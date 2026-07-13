@@ -42,6 +42,14 @@ final class Parser
 			$preRelease = PreRelease::fromArray($data['preRelease']);
 		}
 
+		if (isset($data['releaseDate'])) {
+			return new CalendarVersion(
+				new \DateTimeImmutable($data['releaseDate']),
+				$preRelease,
+				$buildMetaData,
+			);
+		}
+
 		if (!isset($data['minor'], $data['patch'])) {
 			throw new FailedToParseVersion('Failed to parse version array: ' . var_export($data, true));
 		}
@@ -60,6 +68,24 @@ final class Parser
 		$rs = preg_match(self::REGEXP, $version, $matches);
 		if (!$rs) {
 			throw new FailedToParseVersion('Failed to parse version string: ' . $version);
+		}
+
+		if (strlen($matches['Major']) === 4) {
+			if (!isset($matches['Minor']) || !isset($matches['Patch'])) {
+				throw new FailedToParseVersion('Failed to parse version string: ' . $version);
+			}
+
+			$date = $matches['Major'] . '-' . $matches['Minor'] . '-' . $matches['Patch'];
+			$releaseDate = \DateTimeImmutable::createFromFormat('!Y-m-d', $date);
+			if (!$releaseDate) {
+				throw new FailedToParseVersion('Failed to parse version string: ' . $version);
+			}
+
+			return new CalendarVersion(
+				$releaseDate,
+				$this->parsePreRelease($matches['PreReleaseSuffix'] ?? null),
+				$this->parseBuildMetaData($matches['BuildMetadata'] ?? null),
+			);
 		}
 
 		return new SemVersion(
