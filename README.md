@@ -1,5 +1,9 @@
 # Starburst Version
 
+[![Build Status](https://github.com/StarburstPhp/version/actions/workflows/continuous-integration.yml/badge.svg?branch=main)](https://github.com/StarburstPhp/version/actions/workflows/continuous-integration.yml)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/starburst/version.svg)](https://packagist.org/packages/starburst/version)
+[![Software License](https://img.shields.io/github/license/StarburstPhp/version.svg)](LICENSE.md)
+
 A PHP library for parsing and comparing versions, supporting both Semantic Versioning (SemVer) and Calendar Versioning (CalVer).
 
 ## Features
